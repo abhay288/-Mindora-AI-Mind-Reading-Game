@@ -243,7 +243,7 @@ export class MindoraEngine {
             }
 
             // SOFT GUESS (0.70 - 0.85) - Only if Pattern Match is strong OR Popularity is very high
-            const target: Entity = bestCandidate;
+            const target = bestCandidate as Entity;
             const bestPatternScore = patternScores.get(target.id) || 0;
             const isVeryPopular = (target.popularity || 0) > 0.9;
 
