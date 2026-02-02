@@ -68,6 +68,7 @@ export async function POST(req: Request) {
         // E. Fusion (Updated Formula with Copilot)
         const ruleScores = new Map<string, number>();
         const fusedScores = FusionEngine.calculateFinalBroadcasting(
+            candidates,
             ruleScores,
             mlScores,
             fuzzyScores,
@@ -76,14 +77,7 @@ export async function POST(req: Request) {
             copilotScores
         );
 
-        // 6. Apply Learning Reinforcement (Boost)
-        candidates.forEach(c => {
-            const currentScore = fusedScores.get(c.id) || 0;
-            const boost = c.learning_boost || 0;
-            if (boost > 0) {
-                fusedScores.set(c.id, currentScore + boost); // Direct additive boost
-            }
-        });
+
 
         const decision = FusionEngine.decide(candidates, fusedScores, history.length, behavior.pattern);
 

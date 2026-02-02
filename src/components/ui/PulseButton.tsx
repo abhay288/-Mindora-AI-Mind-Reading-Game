@@ -21,9 +21,8 @@ export function PulseButton({ children, className, variant = "primary", pulse = 
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         setIsClicking(true);
-        // Reset click state for animation replay
         setTimeout(() => setIsClicking(false), 400);
-        if (onClick) onClick(e);
+        if (onClick) onClick(e as any);
     };
 
     return (
@@ -36,7 +35,7 @@ export function PulseButton({ children, className, variant = "primary", pulse = 
                 className
             )}
             onClick={handleClick}
-            {...props}
+            {...(props as any)}
         >
             {/* Ripple Effect Container */}
             {isClicking && (

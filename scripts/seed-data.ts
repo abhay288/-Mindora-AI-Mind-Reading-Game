@@ -1,7 +1,7 @@
 
 import { Persistence } from "../src/lib/engine/persistence";
 import { Category, Entity } from "../src/lib/engine/types";
-import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
 
 console.log("🌱 Seeding Mindora Database (Method A - Smart Growth)...");
 
@@ -79,7 +79,7 @@ const rawEntities = [
 ];
 
 const entities: Entity[] = rawEntities.map(raw => ({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     name: raw.name,
     category_id: raw.cat,
     description: raw.desc,

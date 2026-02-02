@@ -128,7 +128,7 @@ export class MindoraEngine {
 
         // 7. CONFIDENCE FUSION
         let bestCandidate: Entity | null = null;
-        let maxConfidence = -1;
+        let maxConfidence = 0;
 
         activeCandidates.forEach((entity: Entity) => {
             const ruleS = 1.0; // Survived filter
@@ -243,8 +243,9 @@ export class MindoraEngine {
             }
 
             // SOFT GUESS (0.70 - 0.85) - Only if Pattern Match is strong OR Popularity is very high
-            const bestPatternScore = patternScores.get((bestCandidate as Entity).id) || 0;
-            const isVeryPopular = ((bestCandidate as Entity).popularity || 0) > 0.9;
+            const target: Entity = bestCandidate;
+            const bestPatternScore = patternScores.get(target.id) || 0;
+            const isVeryPopular = (target.popularity || 0) > 0.9;
 
             if (maxConfidence > 0.70 && (bestPatternScore > 0.80 || isVeryPopular)) {
                 state.status = 'guessing';

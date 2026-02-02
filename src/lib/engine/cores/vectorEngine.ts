@@ -12,14 +12,22 @@ export class VectorEngine {
     static async computeSimilarity(candidates: Entity[], history: UserAnswer[]): Promise<Map<string, number>> {
         const scores = new Map<string, number>();
 
-        // TODO: Replace with real OpenAI Embedding generation
-        // const userVector = await generateEmbedding(historyString);
-
         candidates.forEach(entity => {
-            // MOCK: Random small noise + Base Heuristic for now
-            // In real impl, this would be: cosineSimilarity(userVector, entity.embedding)
+            // Feature Overlap Heuristic
+            let overlap = 0;
+            let total = 0;
 
-            scores.set(entity.id, 0.5); // Neutral placeholder
+            history.forEach(ans => {
+                const val = entity.features[ans.featureKey];
+                if (val) {
+                    total++;
+                    if (val === ans.answer) overlap++;
+                    else if ((val === 'Probably' && ans.answer === 'Yes') || (val === 'Probably Not' && ans.answer === 'No')) overlap += 0.8;
+                }
+            });
+
+            const score = total > 0 ? (overlap / total) : 0.5;
+            scores.set(entity.id, score);
         });
 
         return scores;
