@@ -1,0 +1,10 @@
+{
+  "timestamp": 1770059243905,
+  "staleEntities": [
+    "ent_old_001_mock"
+  ],
+  "inconsistentQuestions": [
+    "q_mock_variance_detected"
+  ],
+  "healthScore": 98
+}

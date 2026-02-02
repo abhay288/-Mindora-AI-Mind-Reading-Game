@@ -1,0 +1,233 @@
+{
+  "entities": [
+    {
+      "id": "abdc596d-8f9e-48da-af7c-2cfe6dafb4b7",
+      "name": "CarryMinati",
+      "category_id": "cat_youtuber",
+      "description": "Indian roaster",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_youtuber": "Yes",
+        "is_real": "Yes"
+      }
+    },
+    {
+      "id": "9fa57717-2de2-4cd7-a63e-c301b5a3c788",
+      "name": "MrBeast",
+      "category_id": "cat_youtuber",
+      "description": "Philanthropist",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_youtuber": "Yes",
+        "is_real": "Yes"
+      }
+    },
+    {
+      "id": "2e91e752-6b62-45ce-8c94-3ddeb785212d",
+      "name": "PewDiePie",
+      "category_id": "cat_youtuber",
+      "description": "Gamer",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_youtuber": "Yes",
+        "is_real": "Yes"
+      }
+    },
+    {
+      "id": "f4ac52b9-2a41-4936-982a-86b7446c7b98",
+      "name": "Shah Rukh Khan",
+      "category_id": "cat_bollywood",
+      "description": "King Khan",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_actor": "Yes",
+        "is_real": "Yes",
+        "is_indian": "Yes"
+      }
+    },
+    {
+      "id": "78498a71-e109-4c3c-a9c2-e8eb24de90c1",
+      "name": "Salman Khan",
+      "category_id": "cat_bollywood",
+      "description": "Bhai",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_actor": "Yes",
+        "is_real": "Yes",
+        "is_indian": "Yes"
+      }
+    },
+    {
+      "id": "4de230df-c5b9-4af4-b241-7ae8abd7a0a3",
+      "name": "Deepika Padukone",
+      "category_id": "cat_bollywood",
+      "description": "Actress",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_actor": "Yes",
+        "is_real": "Yes",
+        "is_indian": "Yes"
+      }
+    },
+    {
+      "id": "ea5b952a-5300-4068-ab4d-1d90ee60891b",
+      "name": "Arijit Singh",
+      "category_id": "cat_singer",
+      "description": "Playback singer",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_singer": "Yes",
+        "is_real": "Yes"
+      }
+    },
+    {
+      "id": "b342a349-562b-45da-8e4e-817c7d958997",
+      "name": "Neha Kakkar",
+      "category_id": "cat_singer",
+      "description": "Party songs",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_singer": "Yes",
+        "is_real": "Yes"
+      }
+    },
+    {
+      "id": "ec203c5f-cdf1-4191-a2bf-4434232cde1a",
+      "name": "Virat Kohli",
+      "category_id": "cat_cricket",
+      "description": "King Kohli",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_athlete": "Yes",
+        "is_real": "Yes",
+        "plays_cricket": "Yes"
+      }
+    },
+    {
+      "id": "8d24040b-0c5b-4154-9128-96d0e33ac21b",
+      "name": "MS Dhoni",
+      "category_id": "cat_cricket",
+      "description": "Captain Cool",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "Yes",
+        "is_athlete": "Yes",
+        "is_real": "Yes",
+        "plays_cricket": "Yes"
+      }
+    },
+    {
+      "id": "fb87de73-cc6b-48b9-8141-9780c33bdba7",
+      "name": "Harry Potter",
+      "category_id": "cat_fictional",
+      "description": "Wizard",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "No",
+        "is_real": "No",
+        "is_fictional": "Yes"
+      }
+    },
+    {
+      "id": "d1271bd3-8383-4c7a-b98c-b38b5097d937",
+      "name": "Iron Man",
+      "category_id": "cat_fictional",
+      "description": "Superhero",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "No",
+        "is_real": "No",
+        "is_fictional": "Yes"
+      }
+    },
+    {
+      "id": "b207a848-1121-48c8-9247-59fe15df27d0",
+      "name": "Doraemon",
+      "category_id": "cat_fictional",
+      "description": "Robot Cat",
+      "is_public_figure": true,
+      "created_at": 1770055632904,
+      "popularity": 0.8,
+      "features": {
+        "is_person": "No",
+        "is_real": "No",
+        "is_fictional": "Yes"
+      }
+    },
+    {
+      "id": "learned_1770061368194",
+      "name": "Abhay",
+      "description": "Learned from user",
+      "popularity": 0.5,
+      "learning_boost": 2,
+      "features": {}
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pat_1770057110289",
+      "entityId": "test_shah_rukh_khan",
+      "vector": [
+        1,
+        1,
+        1
+      ],
+      "theme": "test_theme",
+      "success_rate": 1,
+      "usageCount": 1,
+      "lastUsed": 1770057110289
+    },
+    {
+      "id": "pat_1770061274682",
+      "entityId": "abdc596d-8f9e-48da-af7c-2cfe6dafb4b7",
+      "vector": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "theme": "general",
+      "success_rate": 1,
+      "usageCount": 1,
+      "lastUsed": 1770061274682
+    }
+  ]
+}

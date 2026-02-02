@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@layer base {
+    :root {
+        /* Fonts */
+        --font-heading-ref: 'Playfair Display', serif;
+        --font-sans-ref: 'Inter', sans-serif;
+
+        /* LIGHT THEME (Modern Ivory) */
+        --bg: #FDFBF7;
+        --fg: #1A1A1A;
+        --card: #FFFFFF;
+        --card-fg: #1A1A1A;
+        --popover: #FFFFFF;
+        --popover-fg: #1A1A1A;
+        --primary: #0F766E;
+        /* Teal */
+        --primary-fg: #FFFFFF;
+        --secondary: #D97706;
+        /* Gold */
+        --secondary-fg: #FFFFFF;
+        --muted: #F3F4F6;
+        --muted-fg: #6B7280;
+        --accent: #E0F2F1;
+        --accent-fg: #0F766E;
+        --destructive: #EF4444;
+        --destructive-fg: #F9FAFB;
+        --border: #E5E7EB;
+        --input: #E5E7EB;
+        --ring: #0F766E;
+    }
+
+    .dark {
+        /* DARK THEME (Modern Cosmic) */
+        --bg: #0B0F19;
+        /* Deep Navy Black */
+        --fg: #F9FAFB;
+        --card: #111827;
+        --card-fg: #F9FAFB;
+        --popover: #111827;
+        --popover-fg: #F9FAFB;
+        --primary: #2DD4BF;
+        /* Brighter Teal for Dark Mode */
+        --primary-fg: #0F172A;
+        --secondary: #F59E0B;
+        /* Brighter Gold */
+        --secondary-fg: #0F172A;
+        --muted: #1F2937;
+        --muted-fg: #9CA3AF;
+        --accent: #134E4A;
+        /* Darker Teal for Accent bg */
+        --accent-fg: #2DD4BF;
+        --destructive: #7F1D1D;
+        --destructive-fg: #F9FAFB;
+        --border: #1F2937;
+        --input: #1F2937;
+        --ring: #2DD4BF;
+    }
+}
+
+@theme {
+    /* Wire up Tailwind utilities to the CSS variables */
+    --font-heading: normal 500 1em/1.5 var(--font-heading-ref);
+    --font-sans: normal 400 1em/1.5 var(--font-sans-ref);
+
+    --color-background: var(--bg);
+    --color-foreground: var(--fg);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-fg);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-fg);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-fg);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-fg);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-fg);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-fg);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-fg);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --radius-lg: 1.5rem;
+    --radius-md: calc(1.5rem - 2px);
+    --radius-sm: calc(1.5rem - 4px);
+
+    --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-float: float 6s ease-in-out infinite;
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+}
+
+/* Base styles using theme variables */
+@layer base {
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        font-family: var(--font-sans);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Smooth Theme Transition */
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-heading);
+        font-weight: 500;
+    }
+
+    * {
+        border-color: var(--color-border);
+    }
+}
+
+@layer utilities {
+    .glass-panel {
+        background-color: var(--bg);
+        /* Fallback */
+        background-color: color-mix(in srgb, var(--card) 60%, transparent);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border);
+        /* Solid border color from variable */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    .glass-input {
+        background-color: color-mix(in srgb, var(--card) 40%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+        border-color: var(--primary);
+        background-color: color-mix(in srgb, var(--card) 80%, transparent);
+    }
+}

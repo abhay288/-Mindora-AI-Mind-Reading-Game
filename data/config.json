@@ -1,0 +1,13 @@
+{
+  "rule_weight": 0.99,
+  "bayesian_weight": 0.25,
+  "ml_weight": 0,
+  "fuzzy_weight": 0.15,
+  "pattern_weight": 0.1,
+  "region_boost_cap": 0.15,
+  "session_boost_cap": 0.15,
+  "entropy_multiplier": 1,
+  "novelty_multiplier": 1,
+  "confidence_threshold_hard": 0.85,
+  "confidence_threshold_soft": 0.7
+}

@@ -1,0 +1,21 @@
+{
+    "name": "Mindora - AI Mind Reader",
+    "short_name": "Mindora",
+    "description": "An intelligent AI guessing game that reads your thoughts.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#06b6d4",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

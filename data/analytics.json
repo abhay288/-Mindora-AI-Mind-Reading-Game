@@ -1,0 +1,62 @@
+[
+  {
+    "id": "test_sess",
+    "timestamp": 1770057832432,
+    "theme": "Test",
+    "region": "US",
+    "final_confidence": 0.8,
+    "turns": 5,
+    "success": true,
+    "avg_decision_time": 100
+  },
+  {
+    "id": "sess_1770061274421",
+    "timestamp": 1770061274421,
+    "theme": "characters",
+    "region": "US",
+    "final_confidence": 0.225,
+    "turns": 9,
+    "success": true,
+    "avg_decision_time": 0
+  },
+  {
+    "id": "sess_1770061345928",
+    "timestamp": 1770061345928,
+    "theme": "characters",
+    "region": "US",
+    "final_confidence": 0.225,
+    "turns": 9,
+    "success": false,
+    "avg_decision_time": 0
+  },
+  {
+    "id": "sess_1770062227810",
+    "timestamp": 1770062227810,
+    "theme": "Winter Frost",
+    "region": "IN",
+    "final_confidence": 2.225,
+    "turns": 0,
+    "success": false,
+    "avg_decision_time": 0
+  },
+  {
+    "id": "sess_1770062258634",
+    "timestamp": 1770062258634,
+    "theme": "Winter Frost",
+    "region": "IN",
+    "final_confidence": 2.225,
+    "turns": 0,
+    "success": false,
+    "avg_decision_time": 0
+  },
+  {
+    "id": "sess_1770062269793",
+    "timestamp": 1770062269793,
+    "theme": "Winter Frost",
+    "region": "IN",
+    "final_confidence": 2.225,
+    "turns": 0,
+    "success": false,
+    "avg_decision_time": 0
+  }
+]
