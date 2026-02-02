@@ -27,6 +27,8 @@ export class LearningEngine {
             description: newEntityData.description,
             features: {}, // Will be populated by the diff question + inherited history
             popularity: 0.1, // Start low/novel
+            category_id: 'uncategorized', // Default
+            is_public_figure: false, // Default safety
         };
 
         // 3. Create New Question
@@ -35,7 +37,7 @@ export class LearningEngine {
             id: qId,
             text: { en: diffQuestion.text, hi: diffQuestion.text }, // Auto-trans later
             featureKey: `feat_${qId}`,
-            entropyScore: 1.0 // High value initially to differentiate
+            entropy_score: 1.0 // High value initially to differentiate
         };
 
         // 4. Assign Features

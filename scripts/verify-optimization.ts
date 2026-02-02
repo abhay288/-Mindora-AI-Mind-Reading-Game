@@ -40,7 +40,7 @@ async function runTest() {
         avg_decision_time: 100
     });
 
-    const metrics = AnalyticsUtils.getMetrics();
+    const metrics = await AnalyticsUtils.getMetrics();
     console.log("Metrics:", metrics);
 
     if (metrics && metrics.total_games > 0) {

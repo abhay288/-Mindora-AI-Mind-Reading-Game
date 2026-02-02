@@ -20,6 +20,8 @@ export interface Entity {
     score?: number; // Real-time probability score
     created_at?: number;
     learning_boost?: number; // Dynamic reinforcement score
+    guess_success_rate?: number; // Optimization metric
+    health_score?: number; // Optimization metric
 }
 
 export interface Question {
@@ -34,6 +36,8 @@ export interface Question {
     positive_next_tags?: string[]; // If Yes -> Prioritize these
     negative_next_tags?: string[]; // If No -> Prioritize these
     usage_count?: number;
+    abandon_rate?: number; // Optimization metric
+    archived?: boolean; // For pruning logic
 
     // Perception Layer
     variants?: { en: string; hi: string }[]; // Alternative phrasings localized

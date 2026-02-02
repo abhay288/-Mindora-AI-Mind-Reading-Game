@@ -14,7 +14,7 @@ export async function POST(req: Request) {
             // LEARNING HOOK: Save this pattern
             const { history } = body; // Make sure to pass history from client!
             if (history) {
-                PatternEngine.learnPattern(history, entityId);
+                PatternEngine.learnPattern(history, entityId, 1.0, 'general');
             }
         }
 
