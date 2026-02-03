@@ -56,6 +56,8 @@ interface GameStore {
     confirmGuess: (isCorrect: boolean) => Promise<void>;
     resetGame: () => void;
     forceRecovery: () => void;
+    abortController: AbortController | null;
+
 }
 
 import { ThemeManager } from './engine/themeManager';
@@ -76,6 +78,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     errorMessage: null,
     currentQuestion: null,
     guessResult: null,
+    abortController: null,
 
     // Session Intelligence
     sessionMemory: { theme: '', playCount: 0 },

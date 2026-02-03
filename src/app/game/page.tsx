@@ -36,6 +36,14 @@ export default function GamePage() {
         return () => clearTimeout(timeout);
     }, [isThinking, currentQuestion, resetGame]);
 
+    // UI SAFEGUARD (Step 5): Prevent premature guessing
+    useEffect(() => {
+        if (gameState === 'guessing' && confidence < 0.70) {
+            console.warn("UI Safeguard: Guessing state with low confidence. Forcing Reset.");
+            resetGame();
+        }
+    }, [gameState, confidence, resetGame]);
+
     return (
         <main className="relative min-h-screen flex flex-col overflow-hidden bg-background">
             <NeuralBackground />
