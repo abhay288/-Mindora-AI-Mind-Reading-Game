@@ -90,6 +90,7 @@ export function TeachView() {
                         className="w-full bg-black/30 border border-white/10 rounded-xl p-4 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-lg transition-all placeholder:text-white/20"
                         placeholder="e.g. Harry Potter, Shah Rukh Khan, PewDiePie"
                         autoFocus
+                        maxLength={50}
                     />
                 </div>
 

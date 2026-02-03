@@ -9,12 +9,19 @@ import { useEffect, useState } from "react"; // Added useEffect and useState
 
 export function QuestionCard() {
     // Modified destructuring of useGameStore
-    const { gameState, currentQuestion, language, submitAnswer, characterState, turnCount, errorMessage, isLoading } = useGameStore();
+    const { gameState, currentQuestion, language, submitAnswer, characterState, turnCount, errorMessage, isLoading, forceRecovery } = useGameStore();
     const [displayQuestion, setDisplayQuestion] = useState(""); // Added useState for displayQuestion
 
     // Added useEffect to select random variant
     useEffect(() => {
-        if (!currentQuestion) return;
+        if (!currentQuestion) {
+            // TIMEOUT SAFEGUARD: If stuck in loading or null for > 2.5s, force recovery
+            const timer = setTimeout(() => {
+                if (process.env.NODE_ENV === 'development') console.warn("Mindora Recovery Triggered via Timeout");
+                forceRecovery();
+            }, 2500);
+            return () => clearTimeout(timer);
+        }
 
         const q = currentQuestion;
         let text = language === 'en' ? q.text.en : q.text.hi; // Use language for initial text
@@ -27,7 +34,7 @@ export function QuestionCard() {
         }
 
         setDisplayQuestion(text);
-    }, [currentQuestion, language, gameState]); // Added language and gameState to dependencies
+    }, [currentQuestion, language, gameState, forceRecovery]); // Added language and gameState to dependencies
 
     // Fallback/Error State handled as "Deep Thinking" or "Confused"
     if (gameState === 'error' || (!currentQuestion && !isLoading && gameState === 'playing')) {

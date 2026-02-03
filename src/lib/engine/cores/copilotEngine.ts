@@ -18,6 +18,8 @@ export class CopilotEngine {
             apiKey: apiKey,
             baseURL: "https://openrouter.ai/api/v1",
             dangerouslyAllowBrowser: true,
+            timeout: 15000, // 15s Timeout
+            maxRetries: 2, // Explicit retry limit
             defaultHeaders: {
                 "HTTP-Referer": "https://mindora.ai",
                 "X-Title": "Mindora"

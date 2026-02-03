@@ -32,6 +32,24 @@ export async function POST(req: Request) {
         }
 
         if (candidates.length === 0) {
+            // STEP 3: FIRST QUESTION GUARANTEE (Exhaustion Fallback)
+            if (history.length < 3) {
+                console.warn("Exhaustion early game. Forcing fallback.");
+                const askedIds = history.map((h: any) => h.questionId);
+                const fallback = MOCK_QUESTIONS.find(q =>
+                    q.tags?.includes('core') &&
+                    !askedIds.includes(q.id) &&
+                    !forbiddenIds.includes(q.id)
+                ) || MOCK_QUESTIONS[0];
+
+                if (fallback) {
+                    return NextResponse.json({
+                        action: 'ask',
+                        question: fallback,
+                        candidatesRemaining: 0 // Truth
+                    });
+                }
+            }
             return NextResponse.json({ action: 'giveup' });
         }
 
@@ -52,8 +70,8 @@ export async function POST(req: Request) {
         let copilotQuestions: Question[] = [];
 
         // Condition A: Assist Guessing if we are deep in stats but unsure
-        // Only trigger if we have some history
-        if (history.length >= 3) {
+        // OPTIMIZATION: Only call if game is maturing (5+ turns) to save latency (target < 120ms)
+        if (history.length >= 6 && candidates.length < 20) {
             const aiSuggestion = await CopilotEngine.assistGuess(history, candidates, 'general');
             if (aiSuggestion.entityId) {
                 copilotScores.set(aiSuggestion.entityId, aiSuggestion.confidence);
@@ -141,6 +159,30 @@ export async function POST(req: Request) {
                 // Ensure dynamic question isn't a repeat of a feature we already know
                 nextQuestion = copilotQuestions.find(q => !askedFeatureKeys.includes(q.featureKey)) || null;
                 console.log("COPILOT: Using generated question", nextQuestion?.id);
+            }
+        }
+
+        // STEP 3: FIRST QUESTION GUARANTEE / ENGINE SAFETY
+        if (!nextQuestion) {
+            // Safety: If it's early (turn < 3) and we have no question, we MUST NOT guess yet.
+            if (history.length < 3) {
+                console.warn("Engine returned null in early game. Forcing starter question.");
+
+                // Try to find a core question not asked
+                nextQuestion = MOCK_QUESTIONS.find(q =>
+                    (q.tags?.includes('core') || q.tags?.includes('starter')) &&
+                    !askedIds.includes(q.id) &&
+                    !forbiddenIds.includes(q.id)
+                ) || null;
+
+                // Absolute fallback if everything fails
+                if (!nextQuestion && MOCK_QUESTIONS.length > 0) {
+                    // Just pick ANY random unasked question
+                    nextQuestion = MOCK_QUESTIONS.find(q =>
+                        !askedIds.includes(q.id) &&
+                        !forbiddenIds.includes(q.id)
+                    ) || MOCK_QUESTIONS[0];
+                }
             }
         }
 

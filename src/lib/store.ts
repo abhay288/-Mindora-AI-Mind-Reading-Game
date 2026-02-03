@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Entity, Question, UserAnswer } from './engine/types';
+import { Entity, Question, UserAnswer, FeatureValue } from './engine/types';
 import { AnalyticsUtils } from './engine/analyticsUtils';
 
 // Types
@@ -52,9 +52,10 @@ interface GameStore {
     undoLastAction: () => void;
 
     // Async Actions
-    submitAnswer: (answer: string, timeTaken: number) => Promise<void>;
+    submitAnswer: (answer: FeatureValue | 'INIT', timeTaken: number) => Promise<void>;
     confirmGuess: (isCorrect: boolean) => Promise<void>;
     resetGame: () => void;
+    forceRecovery: () => void;
 }
 
 import { ThemeManager } from './engine/themeManager';
@@ -106,7 +107,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             undoStack: [],
             isLoading: true,
             sessionMemory: newSession,
-            region: detectedRegion
+            region: detectedRegion,
+            // FIRST QUESTION GUARANTEE: Reset everything
+            currentQuestion: null,
+            guessResult: null,
+            confidence: 0,
+            confidenceLog: [],
+            characterState: 'thinking',
+            errorMessage: null
         });
 
         // Initial Question Fetch (Empty History)
@@ -137,7 +145,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
     },
 
-    submitAnswer: async (answer: string, timeTaken: number) => {
+    submitAnswer: async (answer: FeatureValue | 'INIT', timeTaken: number) => {
         const { history, currentQuestion, turnCount, confidence } = get();
 
         // SNAPSHOT STATE before modifying (if not INIT)
@@ -162,7 +170,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             newHistory.push({
                 questionId: currentQuestion.id,
                 featureKey: currentQuestion.featureKey,
-                answer: answer as any,
+                answer: answer, // No cast needed now
                 timestamp: Date.now(),
                 timeTaken
             });
@@ -180,6 +188,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 } catch (e) { /* ignore */ }
             }
 
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s Timeout
+
             const response = await fetch('/api/mindora/guess', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -187,8 +198,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     history: newHistory,
                     theme: get().theme,
                     forbiddenIds // Pass to backend
-                })
+                }),
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -221,13 +235,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
                 // Wait for the adaptive pause
                 setTimeout(() => {
-                    set({
-                        currentQuestion: data.question,
-                        turnCount: get().turnCount + 1,
-                        characterState: 'idle',
-                        isLoading: false,
-                        errorMessage: null
-                    });
+                    if (!data.question) {
+                        // CRITICAL: Engine returned 'ask' but no question? Use Fallback.
+                        console.warn("API returned 'ask' but no question. Using Fallback.");
+                        const fallbackQ: Question = {
+                            id: 'fallback_recovery',
+                            text: { en: "Is your character real?", hi: "क्या आपका पात्र वास्तविक है?" },
+                            featureKey: 'is_real',
+                            tags: ['fallback']
+                        };
+                        set({
+                            currentQuestion: fallbackQ,
+                            turnCount: get().turnCount + 1,
+                            characterState: 'idle',
+                            isLoading: false,
+                            errorMessage: null
+                        });
+                    } else {
+                        set({
+                            currentQuestion: data.question,
+                            turnCount: get().turnCount + 1,
+                            characterState: 'idle',
+                            isLoading: false,
+                            errorMessage: null
+                        });
+                    }
                     // Update confidence separately to ensure log is updated via action if needed, 
                     // or just set here. The store has updateConfidence action but we can set directly.
                     get().updateConfidence(smoothedConf);
@@ -253,7 +285,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     get().updateConfidence(data.confidence);
                 }, delay);
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.warn("API Connection Unstable:", error);
 
             // AUTOMATIC RECOVERY (Simulated Retry via Timeout if first fail)
@@ -317,7 +349,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 // Add new start, keep only last 3
                 if (!lastStarts.includes(firstQ)) {
                     lastStarts.push(firstQ);
-                    if (lastStarts.length > 3) lastStarts.shift();
+                    if (lastStarts.length > 10) lastStarts.shift();
                     localStorage.setItem('mindora_last_starts', JSON.stringify(lastStarts));
                 }
             } catch (e) {
@@ -328,6 +360,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         set({
             gameState: 'playing',
             confidence: 0,
+            confidenceLog: [], // Start fresh graph
             turnCount: 0,
             history: [],
             undoStack: [],
@@ -341,4 +374,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Bootstrap: Fetch first question immediately
         await get().submitAnswer('INIT', 0);
     },
+
+    forceRecovery: () => {
+        set({
+            currentQuestion: {
+                id: 'recovery_q',
+                text: { en: "The system is recalibrating. Shall we continue?", hi: "सिस्टम पुन: कैलिब्रेट कर रहा है। क्या हम जारी रखें?" },
+                featureKey: 'feature_retry', // Dummy
+                tags: ['recovery']
+            },
+            isLoading: false,
+            characterState: 'confused',
+            errorMessage: null
+        });
+    }
 }));

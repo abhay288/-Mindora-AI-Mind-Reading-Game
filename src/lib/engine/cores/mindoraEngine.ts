@@ -52,9 +52,16 @@ export class MindoraEngine {
         });
 
         // Initial Scores Object
-        const scores: Record<string, any> = {};
+        const scores: SessionState['scores'] = {};
         candidates.forEach(c => {
-            scores[c.id] = c.score;
+            scores[c.id] = {
+                rule: 1.0,
+                fuzzy: 0.5,
+                bayesian: c.score || 0.01,
+                ml: 0,
+                intent: 0,
+                final: c.score || 0.01
+            };
         });
 
         return {
@@ -261,11 +268,26 @@ export class MindoraEngine {
 
         // Exhaustion check
         if (state.candidates.length === 0) {
+            // STEP 3: FIRST QUESTION GUARANTEE (Exhaustion Fallback)
+            if (state.turnCount < 3) {
+                const fallback = allQuestions.find(q => q.tags?.includes('core') && !askedIds.includes(q.id)) || allQuestions[0];
+                if (fallback) {
+                    return { state, nextQuestion: fallback, guess: null };
+                }
+            }
             state.status = 'failure';
             return { state, nextQuestion: null, guess: null };
         }
 
         if (state.candidates.length === 1) {
+            // STEP 3: PREMATURE GUESS GUARD
+            if (state.turnCount < 3) {
+                const fallback = allQuestions.find(q => q.tags?.includes('core') && !askedIds.includes(q.id)) || allQuestions[0];
+                if (fallback) {
+                    return { state, nextQuestion: fallback, guess: null };
+                }
+            }
+
             state.status = 'guessing';
             return { state, nextQuestion: null, guess: state.candidates[0] };
         }
@@ -316,6 +338,18 @@ export class MindoraEngine {
 
         // Fallback or Copilot
         if (!nextQ) {
+            // STEP 3: ENGINE SAFETY GUARD
+            if (state.turnCount < 3) {
+                console.warn("MindoraEngine: No question found early. Using Falback.");
+                const fallback = allQuestions.find(q => q.tags?.includes('core') && !askedIds.includes(q.id)) || allQuestions[0];
+
+                if (fallback && !askedIds.includes(fallback.id)) {
+                    return { state, nextQuestion: fallback, guess: null };
+                }
+
+                // If even fallback fails (e.g. empty list passed), we must guess.
+            }
+
             // Try Copilot Generation? For now just fail graceful
             console.warn("No good questions left. Triggering Guess.");
             state.status = 'guessing';

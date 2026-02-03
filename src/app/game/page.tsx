@@ -14,6 +14,8 @@ import { TeachView } from "@/components/game/TeachView";
 import { GuessConfirmation } from "@/components/game/GuessConfirmation";
 import { VictoryView } from "@/components/game/VictoryView";
 import { DefeatView } from "@/components/game/DefeatView";
+import { ConfidenceBar } from "@/components/game/ConfidenceBar";
+import { LearningBadge } from "@/components/ui/LearningBadge";
 
 export default function GamePage() {
     const { gameState, resetGame, characterState, confidence, currentQuestion } = useGameStore();
@@ -48,8 +50,16 @@ export default function GamePage() {
             <div className="flex-1 w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 p-4 pt-16 md:p-8 items-center relative z-10 h-full">
 
                 {/* LEFT COL: AVATAR STAGE (Cols 5) */}
-                <div className="md:col-span-5 flex items-center justify-center relative min-h-[40vh] md:min-h-full order-1 md:order-1">
-                    <Avatar isThinking={isThinking} confidence={confidence} />
+                <div className="md:col-span-5 flex flex-col items-center justify-center relative min-h-[40vh] md:min-h-full order-1 md:order-1">
+                    <div className="relative">
+                        <Avatar isThinking={isThinking} confidence={confidence} />
+                        {/* Phase 12: Learning Badge Overlay */}
+                        <div className="absolute -top-4 -right-4">
+                            <LearningBadge />
+                        </div>
+                    </div>
+                    {/* Phase 12: Connectivity/Confidence Bar */}
+                    <ConfidenceBar />
                 </div>
 
                 {/* RIGHT COL: INTERACTION (Cols 7) */}

@@ -7,14 +7,16 @@ import { useMindoraLogic } from "@/hooks/useMindoraLogic";
 import { motion } from "framer-motion";
 
 const answers = [
-    { id: 'yes', label: 'Yes', labelHi: 'हाँ', color: 'text-emerald-600' },
-    { id: 'no', label: 'No', labelHi: 'नहीं', color: 'text-rose-600' },
-    { id: 'dont_know', label: 'Don\'t Know', labelHi: 'पता नहीं', color: 'text-slate-500' },
-    { id: 'probably', label: 'Probably', labelHi: 'शायद', color: 'text-emerald-500' },
-    { id: 'probably_not', label: 'Probably Not', labelHi: 'शायद नहीं', color: 'text-rose-500' },
+    { id: 'Yes', label: 'Yes', labelHi: 'हाँ', color: 'text-emerald-600' },
+    { id: 'No', label: 'No', labelHi: 'नहीं', color: 'text-rose-600' },
+    { id: 'Dont Know', label: 'Don\'t Know', labelHi: 'पता नहीं', color: 'text-slate-500' },
+    { id: 'Probably', label: 'Probably', labelHi: 'शायद', color: 'text-emerald-500' },
+    { id: 'Probably Not', label: 'Probably Not', labelHi: 'शायद नहीं', color: 'text-rose-500' },
 ] as const;
 
 import { RotateCcw } from "lucide-react";
+
+import { FeatureValue } from "@/lib/engine/types";
 
 export function Controls() {
     const { language, updateConfidence, submitAnswer, setCharacterState, turnCount, undoStack, undoLastAction } = useGameStore();
@@ -26,11 +28,11 @@ export function Controls() {
         startTimeRef.current = Date.now();
     }, [turnCount]);
 
-    const handleAnswer = (ansId: string) => {
+    const handleAnswer = (ansId: FeatureValue) => {
         const timeTaken = Date.now() - startTimeRef.current;
 
         // 1. Calculate new confidence (mock logic)
-        const newConf = calculateNextConfidence(ansId as any);
+        const newConf = calculateNextConfidence(ansId);
 
         // 2. Submit Answer with Timing
         submitAnswer(ansId, timeTaken);
@@ -48,7 +50,7 @@ export function Controls() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 * idx }}
-                        className={ans.id === 'dont_know' ? "col-span-2 md:col-span-1" : ""}
+                        className={ans.id === 'Dont Know' ? "col-span-2 md:col-span-1" : ""}
                     >
                         <PulseButton
                             variant="option"
